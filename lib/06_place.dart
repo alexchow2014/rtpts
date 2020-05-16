@@ -76,9 +76,9 @@ class _Place extends State<Place> {
     oil = user["oil"];
     globals.distance = user["distance"];
     dis = user["distance"];
-    print("A");
-    print(oil);
-    print(dis);
+    //print("A");
+    //print(oil);
+    //print(dis);
   }
   Future request_part_01() async {
     try {
@@ -486,7 +486,7 @@ class _Place extends State<Place> {
                                       globals.lat_02 = lat_02;
                                       globals.lng_01 = lng_01;
                                       globals.lng_02 = lng_02;
-                                      globals.link_request = 'https://boiling-earth-49057.herokuapp.com/api?start_lat='+lat_01.toString()+'&start_lng='+lng_01.toString()+'&end_lat='+lat_02.toString()+'&end_lng='+lng_02.toString()+'&search_dis='+dis+'&oil_consumption='+oil;
+                                      globals.link_request = 'https://boiling-earth-49057.herokuapp.com/api?start_lat='+lat_01.toString()+'&start_lng='+lng_01.toString()+'&end_lat='+lat_02.toString()+'&end_lng='+lng_02.toString()+'&search_dis='+dis+'&oil_consumption='+oil+'&parking_hour='+time;
                                       globals.time_c = 0;
                                       globals.starting_points = starting_points;
                                       globals.destination = destination;
