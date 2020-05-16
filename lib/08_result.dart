@@ -23,9 +23,9 @@ class _resultState extends State<Result> {
     var price_tmp1_02 = double.parse("$price_tmp_02");
     var price_02 = price_tmp1_02.round();
 
-    //var price_tmp_03 = globals.result[2]["total_fee"];
-    //var price_tmp1_03 = double.parse("$price_tmp_03");
-    //var price_03 = price_tmp1_03.round();
+    var price_tmp_03 = globals.result[2]["total_fee"];
+    var price_tmp1_03 = double.parse("$price_tmp_03");
+    var price_03 = price_tmp1_03.round();
 
     var time_tmp_01 = globals.result[0]["total_time"];
     var time_tmp1_01 = double.parse("$time_tmp_01")/60;
@@ -35,9 +35,9 @@ class _resultState extends State<Result> {
     var time_tmp1_02 = double.parse("$time_tmp_02")/60;
     var time_02 = time_tmp1_02.round();
 
-    //var time_tmp_03 = globals.result[2]["total_time"];
-    //var time_tmp1_03 = double.parse("$time_tmp_03")/60;
-    //var time_03 = time_tmp1_03.round();
+    var time_tmp_03 = globals.result[2]["total_time"];
+    var time_tmp1_03 = double.parse("$time_tmp_03")/60;
+    var time_03 = time_tmp1_03.round();
 
     print(globals.starting_points);
     print(globals.destination);
@@ -182,7 +182,7 @@ class _resultState extends State<Result> {
                   InkWell(
                     onTap: () {
                       globals.choice = 3;
-                      //Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new driving()));
+                      Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new driving()));
                     },
                     child: new Container(
                         color: Color.fromARGB(0, 0, 0, 1),
@@ -202,7 +202,7 @@ class _resultState extends State<Result> {
                                       Expanded(
                                         child: Container(
                                           alignment: Alignment.topRight,
-                                          child: Text('\$', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 30),),
+                                          child: Text('\$'+'$price_03', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 30),),
                                         ),
                                       ),
                                     ]
@@ -210,7 +210,7 @@ class _resultState extends State<Result> {
                               ),
                               new Container(
                                 alignment: Alignment.topRight,
-                                child: Text('mins', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 30),),
+                                child: Text('$time_03'+' mins', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 30),),
                               ),
                             ]
                         )

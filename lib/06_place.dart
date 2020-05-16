@@ -15,6 +15,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:place_plugin/place.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/widgets.dart';
+
 
 import './01_mainpage.dart';
 import './07_loading.dart';
@@ -34,10 +36,7 @@ final TextEditingController Controller03 = new TextEditingController();
 var lat_01, lat_02, lng_01, lng_02;
 var time;
 var starting_points, destination;
-
-double _value = 10;
-double _lowerValue = 1;
-double _upperValue = 20;
+var oil, dis;
 
 class Place extends StatefulWidget {
   @override
@@ -58,6 +57,7 @@ class _Place extends State<Place> {
   }
 
   request() async {
+    await get_value();
     await request_part_01();
     await request_part_02();
     await Markers();
@@ -65,6 +65,21 @@ class _Place extends State<Place> {
     return 1;
   }
 
+  get_value() async{
+    var url = 'http://18.190.1.135/tmp/data.php';
+    var data = {'request': '4', 'request_email' :globals.email};
+    var response = await http.post(url, body: json.encode(data));
+    var message = response.body;
+    var user = jsonDecode(message);
+
+    globals.oil = user["oil"];
+    oil = user["oil"];
+    globals.distance = user["distance"];
+    dis = user["distance"];
+    print("A");
+    print(oil);
+    print(dis);
+  }
   Future request_part_01() async {
     try {
       response = await http.get(Uri.encodeFull('https://api.data.gov.hk/v1/carpark-info-vacancy'), headers:{"Accept":"application/json"});
@@ -363,7 +378,7 @@ class _Place extends State<Place> {
       mapController = controller;
     }
     double height = MediaQuery.of(context).size.height;
-    var height_set = height - 325 - 175;
+    var height_set = height - 325 - 175 + 80;
     print(globals.time_c);
     if (globals.time_c == 0) {
       Controller01.text = '';
@@ -403,7 +418,7 @@ class _Place extends State<Place> {
                 child: new Column(
                   children: <Widget>[
                     new Container(
-                      height: 330,
+                      height: 250,
                       child: new Column(
                           children: <Widget>[
                             new InkWell(
@@ -451,39 +466,6 @@ class _Place extends State<Place> {
                                 )
                             ),
                             new Container(
-                                margin: const EdgeInsets.only(top: 5.0, bottom: 5.0, right: 10.0, left: 10.0),
-                                child: new FlutterSlider(
-                                  values: [10],
-                                  max: 20,
-                                  min: 1,
-                                  onDragging: (handlerIndex, lowerValue, upperValue) {
-                                    _lowerValue = lowerValue;
-                                    _upperValue = upperValue;
-                                    setState(() {
-                                      _value = lowerValue;
-                                    });
-                                  },
-                                )
-                            ),
-                            new Container(
-                              margin: const EdgeInsets.only(top: 5.0, bottom: 5.0, right: 10.0, left: 10.0),
-                              child: Row(
-                                children: <Widget>[
-                                  new Expanded(
-                                      flex: 2,
-                                      child: new Container(
-                                        alignment: Alignment.centerRight,
-                                        child: new Text('Secrching distance = ', style: TextStyle(color: Colors.black, fontSize: 20.0,)),
-                                      )
-                                  ),
-                                  new Expanded(
-                                    flex: 1,
-                                    child: new Text('$_value'+' km', style: TextStyle(color: Colors.black, fontSize: 20.0,)),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            new Container(
                               alignment: Alignment.centerRight,
                               margin: const EdgeInsets.only(top: 5.0, bottom: 5.0, right: 25.0),
                               child: new RaisedButton(
@@ -504,7 +486,7 @@ class _Place extends State<Place> {
                                       globals.lat_02 = lat_02;
                                       globals.lng_01 = lng_01;
                                       globals.lng_02 = lng_02;
-                                      globals.link_request = 'https://boiling-earth-49057.herokuapp.com/api?start_lat='+lat_01.toString()+'&start_lng='+lng_01.toString()+'&end_lat='+lat_02.toString()+'&end_lng='+lng_02.toString();
+                                      globals.link_request = 'https://boiling-earth-49057.herokuapp.com/api?start_lat='+lat_01.toString()+'&start_lng='+lng_01.toString()+'&end_lat='+lat_02.toString()+'&end_lng='+lng_02.toString()+'&search_dis='+dis+'&oil_consumption='+oil;
                                       globals.time_c = 0;
                                       globals.starting_points = starting_points;
                                       globals.destination = destination;
@@ -523,22 +505,22 @@ class _Place extends State<Place> {
                         new Container(
                           height: height_set,
                           child: GoogleMap(
-                            zoomGesturesEnabled:true,  //縮放手勢
+                            zoomGesturesEnabled:true,
                             onMapCreated: _onMapCreated,
                             markers: markers,
                             mapType: MapType.normal,
-                            compassEnabled: true,  //指北針
+                            compassEnabled: true,
                             initialCameraPosition: CameraPosition(
-                                target: LatLng(22.375, 114.1),  //中心點座標
-                                zoom: 10.0,  //Camera縮放尺寸，越近數值越大，越遠數值越小，預設為0
-                                bearing: 0,  //Camera旋轉的角度，方向為逆時針轉動，預設為0
-                                tilt: 0  //Camera侵斜角度
+                                target: LatLng(22.375, 114.1),
+                                zoom: 10.0,
+                                bearing: 0,
+                                tilt: 0
                             ),
                           ),
                         ),
                         new Container(
                           alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(top: 5.0, left: 10.0, bottom: 5.0),
+                          margin: const EdgeInsets.only(top: 0.0, left: 10.0, bottom: 5.0),
                           height: 20,
                           child: Text('Vacancy status',style: new TextStyle(fontSize: 14,),),
                         ),
